@@ -110,3 +110,13 @@ export const invites = sqliteTable('invites', { // 招待テーブルの定義
     updatedAt: integer('updated_at', { mode: "timestamp" }).notNull(),
     expiredAt: integer('expired_at', { mode: "timestamp" }).notNull(),
 });
+
+export const mailAuthTokens = sqliteTable('mail_auth_tokens', { // メール認証トークンテーブルの定義
+    id:        text('id').primaryKey(),
+    email:     text('email').notNull(),      // 認証するユーザーのメールアドレス
+    tokenHash: text('token_hash').notNull(), // トークンのハッシュ値
+
+    createdAt: integer('created_at', { mode: "timestamp" }).notNull(),
+    updatedAt: integer('updated_at', { mode: "timestamp" }).notNull(),
+    expiredAt: integer('expired_at', { mode: "timestamp" }).notNull(),
+});
