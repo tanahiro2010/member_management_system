@@ -92,4 +92,4 @@ export {
     AnnouncementInsertSchema,
     AnnouncementSelectSchema,
     AnnouncementUpdateSchema,
-}
+};
