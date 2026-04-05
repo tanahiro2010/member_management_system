@@ -37,11 +37,9 @@ import { Hono, type Context } from 'hono';
 import type { D1Database } from '@cloudflare/workers-types';
 import type { SessionPayload } from './features/auth/auth.model';
 import { type DrizzleD1Database, drizzle } from 'drizzle-orm/d1';
-import { UserInsertSchema, UserSelectSchema } from './types/zod';
-import { Object } from './lib/utils/jwt';
 import { middleware } from './features/middleware';
 
-type Env = {
+export type Env = {
   Variables: {
     name: string;
     db: DrizzleD1Database; // Drizzle ORMを使用してD1データベースにアクセスするための型
@@ -67,26 +65,5 @@ app.use(async (c, next) => {
   await next();
 });
 app.use('/api/*', middleware); // 認証ミドルウェアをAPIルートに適用
-
-// ルーティング
-/**
- * Auth Controllerセクション
- */
-import { AuthController } from './features/auth/auth.controller';
-import { AuthService } from './features/auth/auth.service';
-const authService = new AuthService();
-const authController = new AuthController(authService);
-const authClient = new Hono<Env>();
-
-authClient.post('/login', (c) => authController.login<typeof c>(c));
-authClient.post('/register', (c) => authController.register<typeof c>(c));
-authClient.get('/me', (c) => authController.me<typeof c>(c));
-
-app.route('/api/auth/*', authClient);
-
-/**
- * User Controllerセクション
- */
-
 
 export default app;
