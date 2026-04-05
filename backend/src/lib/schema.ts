@@ -9,7 +9,7 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { Scope } from '../types/scope';
 
 export const users = sqliteTable('users', { // ユーザーテーブルの定義
-    id:       text('id').primaryKey(),
+    id:       text('id', { mode: "text" }).primaryKey(),
     isAuthed: integer('is_authed', { mode: "boolean" }).notNull().default(false), // 認証されているかどうかを示すフラグ
     scopes:   text('scopes', { mode: "json" }).notNull().default(["read_profile", "write_profile"] as Scope[]), // ユーザーのスコープをJSON形式で保存
 
