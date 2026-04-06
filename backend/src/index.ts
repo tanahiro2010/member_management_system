@@ -16,6 +16,7 @@ import { Hono, type Context } from 'hono';
 import type { D1Database } from '@cloudflare/workers-types';
 import { type DrizzleD1Database, drizzle } from 'drizzle-orm/d1';
 import type { SessionPayload } from './features/auth/auth.model';
+import { Resend } from 'resend';
 import { apiRouter } from './routes/route';
 import { middleware } from './features/middleware';
 
@@ -23,6 +24,7 @@ export type Env = {
   Variables: {
     name: string;
     db: DrizzleD1Database;               // Drizzle ORMを使用してD1データベースにアクセスするための型
+    resend: Resend;
     isAuthed: SessionPayload | null;     // 認証状態を示すフラグ
   },
   Bindings: {
@@ -30,7 +32,7 @@ export type Env = {
 
     // 環境変数バインディング
     JWR_SECRET: string; // JWTのシークレットキー
-    EMAIL_API_ENDPOINT: string; // メール送信APIのエンドポイント
+    RESEND_API_KEY: string; // メール送信APIのエンドポイント
     FRONTEND_URL: string;
   }
 }
@@ -39,10 +41,11 @@ export type ContextType<T> = T extends ContextWithEnv ? T : never;
 
 const app = new Hono<Env>();
 app.use(async (c, next) => {
-  // D1データベースのインスタンスを作成し、コンテキストに追加
   const db = drizzle(c.env.D1_DATABASE);
+  const resend = new Resend(c.env.RESEND_API_KEY);
+
   c.set('db', db);
-  
+  c.set('resend', resend);
   await next();
 });
 app.use('/api', middleware);  // 認証ミドルウェアをAPIルートに適用
