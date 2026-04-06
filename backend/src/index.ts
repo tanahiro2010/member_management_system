@@ -29,9 +29,9 @@ export type Env = {
     // Cloudflare バインディング
     D1_DATABASE: D1Database; // Cloudflare D1データベースのバインディング
 
-
     // 環境変数バインディング
     JWR_SECRET: string; // JWTのシークレットキー
+    EMAIL_API_ENDPOINT: string; // メール送信APIのエンドポイント
   }
 }
 export type ContextWithEnv = Context<Env>;
