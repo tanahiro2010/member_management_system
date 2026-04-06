@@ -3,8 +3,9 @@ import { type SessionPayload, LoginAPIPayload, RegisterAPIPayload } from "./auth
 import { AuthService } from "./auth.service";
 import { createToken } from "../../lib/utils/jwt";
 import { ok, forbidden, internalServerError } from "../../lib/helpers/response";
+import { timeUtils } from "../../lib/utils/time";
 
-const SESSION_EXPIRATION = 60 * 60 * 24; // 1日 (秒単位)
+const SESSION_EXPIRATION = timeUtils.toSeconds(1, "day"); // 1日 (秒単位)
 
 
 class AuthController {
