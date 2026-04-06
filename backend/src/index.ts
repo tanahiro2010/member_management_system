@@ -14,8 +14,9 @@
 
 import { Hono, type Context } from 'hono';
 import type { D1Database } from '@cloudflare/workers-types';
-import type { SessionPayload } from './features/auth/auth.model';
 import { type DrizzleD1Database, drizzle } from 'drizzle-orm/d1';
+import type { SessionPayload } from './features/auth/auth.model';
+import { apiRouter } from './routes/route';
 import { middleware } from './features/middleware';
 
 export type Env = {
@@ -43,6 +44,7 @@ app.use(async (c, next) => {
   
   await next();
 });
-app.use('/api/*', middleware); // 認証ミドルウェアをAPIルートに適用
+app.use('/api/*', middleware);  // 認証ミドルウェアをAPIルートに適用
+app.route('/api/*', apiRouter); // APIルートをマウント
 
 export default app;
