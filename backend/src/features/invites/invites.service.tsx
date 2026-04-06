@@ -1,7 +1,9 @@
-import { DrizzleD1Database } from "drizzle-orm/d1";
+import type { DrizzleD1Database } from "drizzle-orm/d1";
+import type { Resend } from "resend";
 import { eq } from "drizzle-orm";
 import { invites } from "../../lib/schema";
 import { randomString } from "../../lib/utils/key";
+import { Invite } from "../../components/invite";
 import bcrypt from "bcryptjs";
 
 
@@ -30,27 +32,18 @@ class TokenService {
         return token; // ハッシュ化されていないトークンを返す
     }
 
-    async sendInviteEmail(endpoint: string, email: string, token: string) {
+    async sendInviteEmail(resend: Resend, baseUrl: string, email: string, token: string) {
         // ここでメール送信のロジックを実装（例: SendGridやAmazon SESなどのメールサービスを使用）
         // メールの内容には、ユーザーが登録ページにアクセスできるようにするための招待URLを含めることができます。
-        const inviteUrl = `https://your-frontend-domain.com/register?token=${token}`;
+        const inviteUrl = `${baseUrl}/register?token=${token}`;
         console.log(`Send invite email to ${email} with invite URL: ${inviteUrl}`);
 
-        const payload = {
-            to: email, 
-            subject: '【UniSchool】チームへの招待',
-            body: `あなたはチームに招待されました。以下のURLから登録してください。\n\n${inviteUrl}\n\nこのURLは7日間有効です。`
-        }
-
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
+        const result = await resend.emails.send({
+            from: 'no-reply@unischool.jp',
+            to: email,
+            subject: "【UniSchool】UniSchoolチームへの招待",
+            react: <Invite inviteUrl={inviteUrl} />
         });
-        const result = await response.json();
-        return result.success ? true : false;
     }
 }
 
