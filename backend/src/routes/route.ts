@@ -1,7 +1,9 @@
 import { Hono } from "hono";
-import app, { Env } from "../";
+import { Env } from "../";
 import { AuthController } from "../features/auth/auth.controller";
 import { AuthService } from "../features/auth/auth.service";
+
+const apiRouter = new Hono<Env>();
 
 // 認証関連のルート
 const authClient = new Hono<Env>();
@@ -11,4 +13,6 @@ authClient.post('/register', (c) => authController.register(c));
 authClient.get('/me', (c) => authController.me(c));
 
 // ルートのマウント
-app.route('/api/auth/*', authClient);
+apiRouter.route('/auth/*', authClient);
+
+export { apiRouter };
