@@ -22,11 +22,10 @@ import { middleware } from './features/middleware';
 export type Env = {
   Variables: {
     name: string;
-    db: DrizzleD1Database; // Drizzle ORMを使用してD1データベースにアクセスするための型
+    db: DrizzleD1Database;               // Drizzle ORMを使用してD1データベースにアクセスするための型
     isAuthed: SessionPayload | null;     // 認証状態を示すフラグ
   },
   Bindings: {
-    // Cloudflare バインディング
     D1_DATABASE: D1Database; // Cloudflare D1データベースのバインディング
 
     // 環境変数バインディング
