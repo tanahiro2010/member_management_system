@@ -13,6 +13,7 @@ authClient.post('/register', (c) => authController.register(c));
 authClient.get('/me', (c) => authController.me(c));
 
 // ルートのマウント
-apiRouter.route('/auth/*', authClient);
+apiRouter.route('/auth', authClient);
+apiRouter.get('/ping', (c) => c.json({ message: 'pong' })); // テスト用のルート
 
 export { apiRouter };
