@@ -18,7 +18,10 @@ const middleware = async (c: ContextWithEnv, next: Next) => {
     const isAuthed = token ? await verifyToken(token, c.env.JWR_SECRET ?? "DEFAULT_JWT_TOKEN") : null;
     c.set('isAuthed', isAuthed as SessionPayload | null);
 
-    await next();
+    console.log('Request received:', c.req.method, c.req.url);
+    console.log('Authentication status:', isAuthed ? 'Authenticated' : 'Not authenticated');
+
+    return await next();
 }
 
 export { middleware };
