@@ -31,6 +31,7 @@ export type Env = {
     // 環境変数バインディング
     JWR_SECRET: string; // JWTのシークレットキー
     EMAIL_API_ENDPOINT: string; // メール送信APIのエンドポイント
+    FRONTEND_URL: string;
   }
 }
 export type ContextWithEnv = Context<Env>;
