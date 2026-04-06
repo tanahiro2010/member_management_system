@@ -2,6 +2,8 @@ import { Hono } from "hono";
 import { Env } from "../";
 import { AuthController } from "../features/auth/auth.controller";
 import { AuthService } from "../features/auth/auth.service";
+import { InvitesController } from "../features/invites/invites.controller";
+import { InvitesService } from "../features/invites/invites.service";
 
 const apiRouter = new Hono<Env>();
 
@@ -12,7 +14,13 @@ authClient.post('/login', (c) => authController.login<typeof c>(c));
 authClient.post('/register', (c) => authController.register(c));
 authClient.get('/me', (c) => authController.me(c));
 
-// ルートのマウント
+// 招待関連のルート
+const invitesClient = new Hono<Env>();
+const invitesController = new InvitesController(new InvitesService());
+invitesClient.post('/', (c) => invitesController.generateToken(c));
+
+// APIルートにクライアントをマウント
+apiRouter.route('/invites', invitesClient);
 apiRouter.route('/auth', authClient);
 apiRouter.get('/ping', (c) => c.json({ message: 'pong' })); // テスト用のルート
 
