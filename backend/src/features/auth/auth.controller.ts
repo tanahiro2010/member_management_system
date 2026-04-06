@@ -1,14 +1,10 @@
-import type { ContextWithEnv } from "../..";
+import type { ContextWithEnv, ContextType } from "../..";
 import { type SessionPayload, LoginAPIPayload, RegisterAPIPayload } from "./auth.model";
 import { AuthService } from "./auth.service";
 import { createToken } from "../../lib/utils/jwt";
 import { ok, forbidden, internalServerError } from "../../lib/helpers/response";
 
-
-type ContextType<T> = T extends ContextWithEnv ? T : never;
-
 const SESSION_EXPIRATION = 60 * 60 * 24; // 1日 (秒単位)
-
 
 
 class AuthController {
