@@ -14,7 +14,12 @@ class TokenController {
         try {
             const { team_id, email, role } = InviteTokenPayloadSchema.parse(body); // 入力のバリデーション
             const result = await this.tokenService.createToken(c.get('db'), team_id, email, role ?? "student", TOKEN_EXPIRATION);
-            this.tokenService.sendInviteEmail(c.env.EMAIL_API_ENDPOINT, email, result);
+            this.tokenService.sendInviteEmail(
+                c.get('resend'),
+                c.env.FRONTEND_URL,
+                email, 
+                result
+            );
 
             return created(result, 'Invite token generated successfully');
         } catch (error) {
