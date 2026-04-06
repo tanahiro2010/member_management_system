@@ -35,6 +35,7 @@ export type Env = {
   }
 }
 export type ContextWithEnv = Context<Env>;
+export type ContextType<T> = T extends ContextWithEnv ? T : never;
 
 const app = new Hono<Env>();
 app.use(async (c, next) => {
@@ -44,7 +45,7 @@ app.use(async (c, next) => {
   
   await next();
 });
-app.use('/api/*', middleware);  // 認証ミドルウェアをAPIルートに適用
-app.route('/api/*', apiRouter); // APIルートをマウント
+app.use('/api', middleware);  // 認証ミドルウェアをAPIルートに適用
+app.route('/api', apiRouter); // APIルートをマウント
 
 export default app;
