@@ -1,13 +1,13 @@
 import type { ContextWithEnv, ContextType } from "../..";
-import type { TokenService } from "./invites.service";
+import type { InvitesService } from "./invites.service";
 import { InviteTokenPayloadSchema } from "./invites.model";
 import { ok, forbidden, internalServerError, created } from "../../lib/helpers/response";
 import { timeUtils } from "../../lib/utils/time";
 
 const TOKEN_EXPIRATION = timeUtils.toSeconds(7, 'day'); // 7日をミリ秒に変換
 
-class TokenController {
-    constructor (private tokenService: TokenService) {}
+class InvitesController {
+    constructor (private tokenService: InvitesService) {}
 
     async generateToken<T = ContextWithEnv>(c: ContextType<T>) {
         const body = await c.req.json();
@@ -28,3 +28,5 @@ class TokenController {
         }
     }
 }
+
+export { InvitesController };

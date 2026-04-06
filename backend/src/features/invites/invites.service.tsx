@@ -7,7 +7,7 @@ import { Invite } from "../../components/invite";
 import bcrypt from "bcryptjs";
 
 
-class TokenService {
+class InvitesService {
     constructor() {}
 
     async createToken(db: DrizzleD1Database, teamId: string, email: string, role: string, expiredAt: number): Promise<string> {
@@ -47,4 +47,4 @@ class TokenService {
     }
 }
 
-export { TokenService };
+export { InvitesService };
