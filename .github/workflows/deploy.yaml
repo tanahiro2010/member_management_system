@@ -1,4 +1,4 @@
-name: Auto Frontend Deploy
+name: Auto Cloudflare Deploy
 
 on:
   push:
